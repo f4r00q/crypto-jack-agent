@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adversary-pod
+  namespace: adversary-simulation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adversary-pod
+  template:
+    metadata:
+      labels:
+        app: adversary-pod
+    spec:
+      containers:
+        - name: attacker
+          image: ubuntu:latest
+          command: [ "/bin/sh", "-c", "while true; do sleep 30; done" ]
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          securityContext:
+            runAsNonRoot: false
+            privileged: true

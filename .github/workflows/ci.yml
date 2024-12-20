@@ -1,0 +1,52 @@
+# .github/workflows/ci.yml
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.13'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "Poetry installed."
+
+    - name: Configure Poetry Environment
+      run: |
+        poetry config virtualenvs.create true
+        poetry install
+
+    - name: Lint Code with Flake8
+      run: |
+        poetry run flake8 ebpf_monitor tests
+
+    - name: Run Tests
+      run: |
+        poetry run pytest --cov=ebpf_monitor tests
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage.xml
+
+    - name: Publish Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: tests/

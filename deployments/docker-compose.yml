@@ -1,0 +1,35 @@
+# docker-compose.yml
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=supersecretkey
+      - SMTP_SERVER=smtp.example.com
+      - SMTP_PORT=587
+      - EMAIL_SENDER=alert@example.com
+      - EMAIL_RECIPIENT=recipient@example.com
+      - SMTP_USER=user
+      - SMTP_PASSWORD=password
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: monitor_logs
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

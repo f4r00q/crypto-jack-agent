@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ebpf-monitor"
+version = "0.1.0"
+description = "A monitoring tool for Docker and Kubernetes attacks Cryptojacking attacks"
+authors = ["Farooq Shaikh"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+pytest = "^8.3.4"
+flask = "^3.1.0"
+numpy = "^2.2.0"
+bcc = "^0.1.10"
+scikit-learn = "^1.6.0"
+kubernetes = "^31.0.0"
+prometheus-client = "^0.21.1"
+jwt = "^1.3.1"
+flake8 = "^6.0.0"
+black = "^24.10.0"
+pytest-cov = "^6.0.0"
+pyjwt = "^2.10.1"
+
+[tool.flake8]
+max-line-length = 88
+
+[tool.poetry.scripts]
+ebpf-simulate = "run:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+ 
